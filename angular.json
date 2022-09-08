@@ -101,6 +101,16 @@
             ],
             "scripts": []
           }
+        },
+        "deploy": {
+          "builder": "@angular/fire:deploy",
+          "options": {
+            "prerender": false,
+            "ssr": false,
+            "browserTarget": "ingresos-app:build:production",
+            "firebaseProject": "ingreso-egreso-e7634",
+            "firebaseHostingSite": "ingreso-egreso-e7634"
+          }
         }
       }
     }

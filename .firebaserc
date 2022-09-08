@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "ingreso-egreso-e7634": {
+      "hosting": {
+        "ingresos-app": [
+          "ingreso-egreso-e7634"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "ingreso-egreso-e7634"
+  }
+}
