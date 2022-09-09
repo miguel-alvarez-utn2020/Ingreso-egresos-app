@@ -1,3 +1,4 @@
+import { AuthService } from 'src/app/services/auth.service';
 import { Component } from '@angular/core';
 
 @Component({
@@ -7,4 +8,9 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'ingresos-app';
+
+  constructor(private authService: AuthService){
+    this.authService.initAuthListener()
+  }
+
 }
