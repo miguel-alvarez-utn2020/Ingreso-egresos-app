@@ -1,24 +1,40 @@
-import { Router } from '@angular/router';
+import { AppState } from './../../app.reducer';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import Swal from 'sweetalert2';
+import { Subscribable, Subscription } from 'rxjs';
+import { Store } from '@ngrx/store';
+import * as ui from '../../state/ui/ui.action'
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
   formLogin!: FormGroup;
-
+  uiSubscription!: Subscription
+  isLoading: boolean = false
   constructor(
     private fb: FormBuilder,
     private authSvc: AuthService,
-    private router: Router
+    private router: Router,
+    private store: Store<AppState>
+
   ) {}
+  
 
   ngOnInit(): void {
     this.initForm();
+     this.uiSubscription = this.store.select( 'ui' ).subscribe( ({ isLoading }) => {
+      this.isLoading = isLoading
+    } )
+   
+  }
+
+  ngOnDestroy(): void {
+    this.uiSubscription.unsubscribe()
   }
 
   initForm() {
@@ -33,17 +49,17 @@ export class LoginComponent implements OnInit {
       return;
     }
 
-    Swal.fire({
-      title: 'Auto close alert!',
+    this.store.dispatch( ui.isLoading() )
 
-      didOpen: () => {
-        Swal.showLoading();
+
+    // Swal.fire({
+    //   title: 'Auto close alert!',
+
+    //   didOpen: () => {
+    //     Swal.showLoading();
        
-      },
-    }).then((result) => {
-      /* Read more about handling dismissals below */
-      
-    });
+    //   },
+    // })
     const { email, password } = this.formLogin.value;
     this.authSvc
       .userLogin(email, password)
@@ -56,11 +72,15 @@ export class LoginComponent implements OnInit {
           showConfirmButton: false,
           timer: 1500,
         }).then(() => {
+          this.store.dispatch( ui.stopLoading() )
           this.router.navigate(['/']);
           Swal.close()
         });
       })
       .catch((err) => {
+        console.log(err.message);
+        this.store.dispatch( ui.stopLoading() )
+        
         Swal.fire({
           icon: 'error',
           title: 'Oops...',
