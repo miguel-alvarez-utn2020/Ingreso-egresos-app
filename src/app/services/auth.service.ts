@@ -6,18 +6,24 @@ import { Injectable } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import * as authAction from '../state/auth/auth.action'
+import * as ingresoEgresoAction from '../state/ingreso-egreso/ingreso-egreso.action'
+import * as estadisticasAction from '../state/estadisticas/estadistica.action'
 import { Subscription } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   subscriptionFireStore: Subscription
-
+  private user: User
   constructor(
     public auth: AngularFireAuth,
     public fireStore: AngularFirestore,
     private store: Store<AppState>
   ) {}
+
+    get userLoged(){
+      return this.user
+    }
 
   initAuthListener() {
       this.auth.authState.subscribe((fuser) => {
@@ -36,6 +42,7 @@ export class AuthService {
             name,
             id
           }
+          this.user = user
           this.store.dispatch( authAction.setUser( { user } ) )
           console.log('Usuario', fireStoreUser);
           
@@ -46,6 +53,8 @@ export class AuthService {
         
         //si no existe el usuario
         this.subscriptionFireStore.unsubscribe()
+        this.store.dispatch( ingresoEgresoAction.unSetItems() )
+        this.store.dispatch( estadisticasAction.unSetEstadisticas() )
         this.store.dispatch( authAction.unSetUser() )
       }
 

@@ -7,7 +7,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { User } from 'src/app/models/user.model';
 import { AuthService } from 'src/app/services/auth.service';
+
 import { AngularFirestore } from '@angular/fire/compat/firestore';
+
 import * as ui from '../../state/ui/ui.action'
 import Swal from 'sweetalert2';
 @Component({
@@ -46,9 +48,9 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
   initRegisterForm() {
     this.registerForm = this.fb.group({
-      nombre: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required],
+      nombre: [''],
+      email: [''],
+      password: [''],
     });
   }
 
@@ -58,7 +60,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
     }
 
     this.store.dispatch( ui.isLoading() )
-
+    console.log(this.registerForm.value)
     const { nombre, email, password } = this.registerForm.value;
 
     this.authSvc

@@ -22,6 +22,8 @@ import { environment } from 'src/environments/environment';
 //NGRX
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+//chart
+import { NgChartsModule } from 'ng2-charts';
 
 @NgModule({
   declarations: [
@@ -48,7 +50,8 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
       maxAge: 25,
       logOnly: environment.production,
       autoPause: true
-    })
+    }),
+    NgChartsModule
     
   ],
   providers: [],
