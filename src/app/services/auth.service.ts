@@ -52,7 +52,7 @@ export class AuthService {
         console.log('entro al else', fuser);
         
         //si no existe el usuario
-        this.subscriptionFireStore.unsubscribe()
+        this.subscriptionFireStore?.unsubscribe()
         this.store.dispatch( ingresoEgresoAction.unSetItems() )
         this.store.dispatch( estadisticasAction.unSetEstadisticas() )
         this.store.dispatch( authAction.unSetUser() )
