@@ -1,33 +1,46 @@
 <div class="row">
-    <div class="col-12">
-        <div class="card">
-          <div class="card-body">
-            <h4 class="card-title">Detalle de ingreso egreso</h4>
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Detalle de ingreso egreso</h4>
 
-            <table class="table">
-              <thead>
-                <tr>
-                  <th>Descripción</th>
-                  <th>Monto</th>
-                  <th>Tipo</th>
-                  <th></th>
-                </tr>
-              </thead>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Descripción</th>
+              <th>Monto</th>
+              <th>Tipo</th>
+              <th></th>
+            </tr>
+          </thead>
 
-              <tbody>
-                <tr>
-                  <td>Descripción</td>
-                  <td>Monto</td>
-                  <td>Tipo</td>
-                  <td>acciones</td>
-                </tr>
-              </tbody>
+          <tbody>
+            <tr *ngFor="let item of ingresoEgresos">
+              <td>{{ item.description }}</td>
+              <td>{{ item.amount }}</td>
+              <td
+                [class.text-success]="item.typeEntry === 'ingreso'"
+                [class.text-danger]="item.typeEntry === 'egreso'"
+              >
+                {{ item.typeEntry }}
+              </td>
+              <td>
+        
 
-            </table>
-
-
-          </div>
-        </div>
+                <button
+                  type="button"
+                  class="btn btn-danger"
+                  (click)="delete(item)"
+                >
+                  <i class="fa fa-trash"></i>
+                  
+                  Delete
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
+  </div>
 </div>
-  
